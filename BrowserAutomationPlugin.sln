@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserAutomation", "BrowserAutomation.csproj", "{1C31C1DD-FB6B-47C1-AD8F-A956050466F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserAutomationTests", "BrowserAutomationTests\BrowserAutomationTests.csproj", "{2BD1BC7D-9CB5-4925-8F54-12B4307795F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C31C1DD-FB6B-47C1-AD8F-A956050466F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C31C1DD-FB6B-47C1-AD8F-A956050466F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C31C1DD-FB6B-47C1-AD8F-A956050466F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C31C1DD-FB6B-47C1-AD8F-A956050466F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD1BC7D-9CB5-4925-8F54-12B4307795F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD1BC7D-9CB5-4925-8F54-12B4307795F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD1BC7D-9CB5-4925-8F54-12B4307795F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD1BC7D-9CB5-4925-8F54-12B4307795F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25FB99A2-3E99-4525-A779-8A7A0031B4B3}
+	EndGlobalSection
+EndGlobal
