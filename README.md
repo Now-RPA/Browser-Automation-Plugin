@@ -5,7 +5,8 @@ BrowserAutomationPlugin is a custom user plugin for the Now RPA platform by Serv
 This plugin provides a wide range of actions for browser automation, including navigation, element interaction, JavaScript execution, and more. It supports both Chrome and Edge browsers and can be easily integrated into your Now RPA projects.
 
 
-https://github.com/user-attachments/assets/01a4ff5b-445e-46c8-b84c-d23718131846
+https://github.com/user-attachments/assets/1aae221c-d578-48fa-b196-a93d3901312a
+
 
 
 ## Setup and Installation
