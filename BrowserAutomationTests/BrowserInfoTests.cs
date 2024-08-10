@@ -95,7 +95,7 @@ namespace BrowserAutomationTests
         {
             Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
             Window.OpenNewTab(_browserConnection);
-            List<string> windows = Window.GetAll(_browserConnection);
+            List<string> windows = Window.GetAllHandles(_browserConnection);
             Assert.AreEqual(2, windows.Count);
         }
 

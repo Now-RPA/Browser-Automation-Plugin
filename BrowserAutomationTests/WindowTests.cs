@@ -53,10 +53,10 @@ namespace BrowserAutomationTests
         {
             Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
             Wait.PageLoaded(_browserConnection, 10);
-            List<string> initialWindows = Window.GetAll(_browserConnection);
+            List<string> initialWindows = Window.GetAllHandles(_browserConnection);
             Window.OpenNewTab(_browserConnection);
             Wait.PageLoaded(_browserConnection, 10);
-            List<string> finalWindows = Window.GetAll(_browserConnection);
+            List<string> finalWindows = Window.GetAllHandles(_browserConnection);
             Assert.AreEqual(initialWindows.Count + 1, finalWindows.Count);
         }
 
@@ -65,10 +65,10 @@ namespace BrowserAutomationTests
         {
             Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
             Wait.PageLoaded(_browserConnection, 10);
-            List<string> initialWindows = Window.GetAll(_browserConnection);
+            List<string> initialWindows = Window.GetAllHandles(_browserConnection);
             Window.OpenNewWindow(_browserConnection);
             Wait.PageLoaded(_browserConnection, 10);
-            List<string> finalWindows = Window.GetAll(_browserConnection);
+            List<string> finalWindows = Window.GetAllHandles(_browserConnection);
             Assert.AreEqual(initialWindows.Count + 1, finalWindows.Count);
         }
 
@@ -77,9 +77,9 @@ namespace BrowserAutomationTests
         {
             Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
             Window.OpenNewTab(_browserConnection);
-            List<string> initialWindows = Window.GetAll(_browserConnection);
+            List<string> initialWindows = Window.GetAllHandles(_browserConnection);
             Window.Close(_browserConnection);
-            List<string> finalWindows = Window.GetAll(_browserConnection);
+            List<string> finalWindows = Window.GetAllHandles(_browserConnection);
             Assert.AreEqual(initialWindows.Count - 1, finalWindows.Count);
         }
 
