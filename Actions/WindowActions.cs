@@ -1,4 +1,5 @@
-﻿using BrowserAutomationPlugin.Helpers;
+﻿using BrowserAutomationPlugin.Core;
+using BrowserAutomationPlugin.Helpers;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -9,34 +10,71 @@ namespace BrowserAutomationPlugin.Actions
 {
     public static class WindowActions
     {
-        public static void GoToUrl(IWebDriver driver, string url, WindowState windowState = WindowState.WindowMaximized, int? width = null, int? height = null)
+        public static void GoToUrl(BrowserConnection connection, string url, WindowState windowState = WindowState.WindowMaximized, int? width = null, int? height = null)
         {
-            WebDriverHelper.EnsureValidSessionExists(driver);
-            driver.Navigate().GoToUrl(url);
-            SetSize(driver, windowState, width, height);
+            WebDriverHelper.EnsureValidSessionExists(connection?.Driver);
+            try
+            {
+                connection?.Driver.Navigate().GoToUrl(url);
+            }
+            catch (WebDriverException)
+            {
+                // If the session doesn't exist, reinitialize the driver -this will automatically create window
+                connection?.ReinitializeDriver();
+                connection?.Driver.Navigate().GoToUrl(url);
+            }
+            finally
+            {
+                SetSize(connection?.Driver, windowState, width, height);
+            }
+
         }
 
-        public static void OpenNewTab(IWebDriver driver)
+        public static void OpenNewTab(BrowserConnection connection)
         {
-            WebDriverHelper.EnsureValidSessionExists(driver);
-            driver.SwitchTo().NewWindow(WindowType.Tab);
+            WebDriverHelper.EnsureValidSessionExists(connection?.Driver);
+            try
+            {
+                connection?.Driver.SwitchTo().NewWindow(WindowType.Tab);
+            }
+            catch (WebDriverException)
+            {
+                // If the session doesn't exist, reinitialize the driver -this will automatically create window
+                connection?.ReinitializeDriver();
+            }
         }
 
-        public static void OpenNewWindow(IWebDriver driver)
+        public static void OpenNewWindow(BrowserConnection connection)
         {
-            WebDriverHelper.EnsureValidSessionExists(driver);
-            driver.SwitchTo().NewWindow(WindowType.Window);
+
+            WebDriverHelper.EnsureValidSessionExists(connection?.Driver);
+            try
+            {
+                connection?.Driver.SwitchTo().NewWindow(WindowType.Window);
+            }
+            catch (WebDriverException)
+            {
+                // If the session doesn't exist, reinitialize the driver -this will automatically create window
+                connection?.ReinitializeDriver();
+            }
         }
 
         public static void CloseCurrentWindowAndSwitch(IWebDriver driver)
         {
             WebDriverHelper.EnsureValidSessionExists(driver);
-            driver.Close();
-            var windowHandles = driver.WindowHandles;
-            if (windowHandles.Count > 0)
+            try
             {
-                driver.SwitchTo().Window(windowHandles[windowHandles.Count - 1]);
+                driver.Close();
+                var windowHandles = driver.WindowHandles;
+                if (windowHandles.Count > 0)
+                {
+                    driver.SwitchTo().Window(windowHandles[windowHandles.Count - 1]);
+                }
             }
+            catch (WebDriverException e)
+            {
+            }
+
 
         }
 

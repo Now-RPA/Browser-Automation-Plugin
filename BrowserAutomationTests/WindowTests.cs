@@ -15,7 +15,7 @@ namespace BrowserAutomationTests
         [ClassInitialize]
         public static void ClassInitialize(TestContext _)
         {
-            _browserConnection = Session.Start(BrowserType.Chrome, false, null, null, null, new List<string>());
+            _browserConnection = Session.Start(BrowserType.Chrome, false, null, null, null, new List<string>(), DisposeOption.AutoDisposeOn);
         }
 
         [ClassCleanup]
@@ -47,6 +47,23 @@ namespace BrowserAutomationTests
 
             Assert.AreEqual(initialUrl, Read.GetCurrentUrl(_browserConnection));
         }
+        [TestMethod]
+        public void TestCloseWindow()
+        {
+            Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
+            Window.OpenNewTab(_browserConnection);
+            List<string> initialWindows = Window.GetAllHandles(_browserConnection);
+            Window.Close(_browserConnection);
+            List<string> finalWindows = Window.GetAllHandles(_browserConnection);
+            Assert.AreEqual(initialWindows.Count - 1, finalWindows.Count);
+            Window.Close(_browserConnection);
+            //even if window does not exist, close should not throw error since it is already closed
+            Window.Close(_browserConnection);
+            Window.OpenNewWindow(_browserConnection);
+            Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
+            finalWindows = Window.GetAllHandles(_browserConnection);
+            Assert.AreEqual(1, finalWindows.Count);
+        }
 
         [TestMethod]
         public void TestOpenNewTab()
@@ -73,23 +90,18 @@ namespace BrowserAutomationTests
         }
 
         [TestMethod]
-        public void TestCloseWindow()
-        {
-            Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
-            Window.OpenNewTab(_browserConnection);
-            List<string> initialWindows = Window.GetAllHandles(_browserConnection);
-            Window.Close(_browserConnection);
-            List<string> finalWindows = Window.GetAllHandles(_browserConnection);
-            Assert.AreEqual(initialWindows.Count - 1, finalWindows.Count);
-        }
-
-        [TestMethod]
         public void TestGetCurrentTitle()
         {
             Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
             Wait.PageLoaded(_browserConnection, 10);
             string title = Window.GetCurrentTitle(_browserConnection);
             Assert.AreEqual("Example Domain", title);
+            Window.Close(_browserConnection);
+            Window.GoToUrl(_browserConnection, "https://www.example.com", WindowState.WindowMaximized);
+            Wait.PageLoaded(_browserConnection, 10);
+            title = Window.GetCurrentTitle(_browserConnection);
+            Assert.AreEqual("Example Domain", title);
+            Window.Close(_browserConnection);
         }
 
         [TestMethod]
@@ -163,5 +175,7 @@ namespace BrowserAutomationTests
             Assert.IsTrue(fileInfo.Length > 0, "Element screenshot file is empty.");
             File.Delete(screenshotPath);
         }
+
+
     }
 }

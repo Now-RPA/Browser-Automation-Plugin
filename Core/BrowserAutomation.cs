@@ -91,17 +91,17 @@ namespace BrowserAutomationPlugin.Core
         public static void GoToUrl(BrowserConnection connection, string url, WindowState windowState = WindowState.WindowMaximized,
             int? width = null, int? height = null)
         {
-            WindowActions.GoToUrl(connection?.Driver, url, windowState, width, height);
+            WindowActions.GoToUrl(connection, url, windowState, width, height);
         }
 
         public static void OpenNewTab(BrowserConnection connection)
         {
-            WindowActions.OpenNewTab(connection?.Driver);
+            WindowActions.OpenNewTab(connection);
         }
 
         public static void OpenNewWindow(BrowserConnection connection)
         {
-            WindowActions.OpenNewWindow(connection?.Driver);
+            WindowActions.OpenNewWindow(connection);
         }
 
         public static void Select(BrowserConnection connection, string handleOrTitle, WindowSelectionMethod selectionMethod = WindowSelectionMethod.SelectWindowByTitleRegex)

@@ -10,8 +10,15 @@ namespace BrowserAutomationPlugin.Core
     public class BrowserConnection
     {
         private IWebDriverFactory _factory;
-        public IWebDriver Driver { get; protected set; }
+        public IWebDriver Driver { get; private set; }
         public string Library { get; }
+
+        private readonly BrowserType _browserType;
+        private readonly string _profilePath;
+        private readonly bool _headless;
+        private readonly string _driverPath;
+        private readonly List<string> _arguments;
+        private readonly Dictionary<string, object> _preferences;
 
         public BrowserConnection(
             BrowserType browserType = BrowserType.Chrome,
@@ -23,16 +30,52 @@ namespace BrowserAutomationPlugin.Core
             Dictionary<string, object> preferences = null)
         {
             SeleniumManagerSetup.SetSeleniumManagerPath();
-            var driverArguments = PrepareDriverArguments(headless, profilePath, arguments);
-            var driverPreferences = PrepareDriverPreferences(preferences);
+            _browserType = browserType;
+            _profilePath = profilePath;
+            _headless = headless;
+            _driverPath = driverPath;
+            _arguments = arguments;
+            _preferences = preferences;
             Library = library ?? string.Empty;
-            InitializeDriver(driverPath, driverArguments, driverPreferences, browserType);
+
+            InitializeDriver();
         }
 
         public void Dispose()
         {
             Driver?.Quit();
             Driver = null;
+        }
+
+        public void ReinitializeDriver()
+        {
+            Dispose();
+            InitializeDriver();
+        }
+
+        public void OpenNewWindow()
+        {
+            try
+            {
+                WebDriverHelper.EnsureValidSessionExists(Driver);
+                Driver.SwitchTo().NewWindow(WindowType.Window);
+            }
+            catch (WebDriverException)
+            {
+                // If the session doesn't exist, reinitialize the driver
+                ReinitializeDriver();
+                Driver.SwitchTo().NewWindow(WindowType.Window);
+            }
+        }
+
+        private void InitializeDriver()
+        {
+            var driverArguments = PrepareDriverArguments(_headless, _profilePath, _arguments);
+            var driverPreferences = PrepareDriverPreferences(_preferences);
+            _factory = GetWebDriverFactory(_browserType);
+            Driver = _factory.CreateDriver(driverArguments, driverPreferences, _driverPath);
+            if (Driver == null)
+                throw new InvalidOperationException("Unable to initialize the WebDriver.");
         }
 
         private static IWebDriverFactory GetWebDriverFactory(BrowserType browserType)
@@ -117,16 +160,8 @@ namespace BrowserAutomationPlugin.Core
 
             return mergedArguments.Distinct().ToList();
         }
-
-        private void InitializeDriver(string driverPath, List<string> arguments, Dictionary<string, object> preferences,
-            BrowserType browserType)
-        {
-            _factory = GetWebDriverFactory(browserType);
-            Driver = _factory.CreateDriver(arguments, preferences, driverPath);
-            if (Driver == null)
-                throw new InvalidOperationException("Unable to initialize the WebDriver.");
-        }
     }
+
     public sealed class DisposableBrowserConnection : BrowserConnection, IDisposable
     {
         public DisposableBrowserConnection(
@@ -141,5 +176,4 @@ namespace BrowserAutomationPlugin.Core
         {
         }
     }
-
 }
