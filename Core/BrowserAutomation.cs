@@ -12,7 +12,7 @@ namespace BrowserAutomationPlugin.Core
         AutoDisposeOn,
         AutoDisposeOff
     }
-    [AddIn("BrowserAutomation", Description = "Browser Automation Plugin for RPA", Publisher = "Sumit Kumar", Version = "1.0")]
+    [AddIn("BrowserAutomation", Description = "Browser Automation Plugin for RPA", Publisher = "Sumit Kumar", Version = "1.0.1.0")]
     public class Session
     {
         public static BrowserConnection Start(
