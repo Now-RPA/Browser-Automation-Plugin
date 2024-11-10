@@ -1,29 +1,40 @@
-﻿using BrowserAutomationPlugin.Helpers;
+﻿using System;
+using System.AddIn;
+using BrowserAutomationPlugin.Core;
+using BrowserAutomationPlugin.Helpers;
 using OpenQA.Selenium;
-using System;
 
-namespace BrowserAutomationPlugin.Actions
+namespace BrowserAutomationPlugin.Actions;
+
+[AddIn("Navigation")]
+public class Navigation
 {
-    public static class NavigationActions
+    public static void Navigate(BrowserConnection connection,
+        NavigationOption navigateOption = NavigationOption.Refresh)
     {
-        public static void Navigate(IWebDriver driver, NavigationOption navigateOption)
-        {
-            WebDriverHelper.EnsureValidSessionExists(driver);
+        NavigationActions.Navigate(connection?.Driver, navigateOption);
+    }
+}
 
-            switch (navigateOption)
-            {
-                case NavigationOption.NavigateBack:
-                    driver.Navigate().Back();
-                    break;
-                case NavigationOption.NavigateForward:
-                    driver.Navigate().Forward();
-                    break;
-                case NavigationOption.Refresh:
-                    driver.Navigate().Refresh();
-                    break;
-                default:
-                    throw new ArgumentException("Invalid navigation option");
-            }
+public static class NavigationActions
+{
+    public static void Navigate(IWebDriver driver, NavigationOption navigateOption)
+    {
+        WebDriverHelper.EnsureValidSessionExists(driver);
+
+        switch (navigateOption)
+        {
+            case NavigationOption.NavigateBack:
+                driver.Navigate().Back();
+                break;
+            case NavigationOption.NavigateForward:
+                driver.Navigate().Forward();
+                break;
+            case NavigationOption.Refresh:
+                driver.Navigate().Refresh();
+                break;
+            default:
+                throw new ArgumentException("Invalid navigation option");
         }
     }
 }
