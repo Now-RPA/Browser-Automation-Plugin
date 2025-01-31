@@ -68,7 +68,7 @@ public class Mouse
 }
 
 [AddIn("Input")]
-public static class Input
+public class Input
 {
     public static void Clear(BrowserConnection connection, string selector,
         SelectorType selectorType = SelectorType.CssSelector,

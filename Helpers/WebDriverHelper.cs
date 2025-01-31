@@ -92,7 +92,10 @@ public static class WebDriverHelper
             Timeout = TimeSpan.FromSeconds(timeoutInSeconds),
             PollingInterval = TimeSpan.FromMilliseconds(100)
         };
-        wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+        wait.IgnoreExceptionTypes(typeof(NoSuchElementException),
+            typeof(StaleElementReferenceException),
+            typeof(ElementNotVisibleException),
+            typeof(ElementNotInteractableException));
         try
         {
             return wait.Until(webDriver =>
